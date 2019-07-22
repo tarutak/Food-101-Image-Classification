@@ -49,11 +49,9 @@ Following is a comparison of the previous SoTA classification results for the Fo
 
 ---
 
-We will tackle this problem using two frameworks, 
+We will tackle this problem using, 
 
-1. [Keras](http://keras.io/) 
-
-2. [Fastai](https://docs.fast.ai/)
+[Fastai](https://docs.fast.ai/)
 
  ---
 
@@ -120,51 +118,6 @@ Results can further be improved
 - Train longer (*as always, I need more power*)
 - Experimenting with more transformations like skewness, jitter, etc can lead to more robustness
 
----
-
-## Keras Approach
-
-We will use xception as base architecture.
-
-**Steps**
-
-- We will use xception architecture which requires 299 x 299 image size as input using `ImageDataGenerator` from keras to create training and validation data sets
-- Next, the architecture is frozen and trained for 15 epochs
-- Finetune the model and train for another 15 epochs
-
-*Simple Enough?*
-
-What result do we obtain after going through all this? Let's have a look
-
-All results obtained are using Google Colab(*thanks Google!*).
-
-
-|  Phase                       |   Time Taken (hrs)          |  Epochs  |  Top-1 Accuracy  % |  Top-5 Accuracy %  |
-| ------------------------     |----------------------------------| --------------|------------------------------|------------------------------ |
-| Freeze and Train on 299 size images  |  11 | 15   |                 38           |            66                |
-|  Unfreeze and Train on 299 size images | 9  |  15   |               55    |           79                  |
-
-
----
-
-**Conclusion**
-
-*Phew!* 
-
-**A lot of patience** - 20 hrs (*and dealing with colab is not easy, poor connections will lead to always disconnecting and 12 hrs timeout*)
-
-**Not so Cool Classifier** - Top-1 Accuracy = 55% and Top-5 Accuracy = 79%  (Compared to Fastai results)
-
----
-
-**Improvements**
-
-Results can further be improved
-
-- Train longer (*as always, I need more power*)
-- Ways to reduce overfitting .. hmm regularization, different architecture Inception or ResNet ... maybe.
-
----
 
 **Plots**
 
@@ -188,69 +141,6 @@ Link:
 
 ---
 
-## Project Organization
-    .
-    ├── data
-    │   ├── results
-    │   │   ├── result_test_1.png
-    │   │   ├── result_test_2.png
-    │   │   ├── result_test_3.png
-    │   │   ├── result_test_4.png
-    │   │   └── result_test-5.png
-    │   └── test
-    │       ├── test_1.jpg
-    │       ├── test_2.jpg
-    │       ├── test_3.jpg
-    │       ├── test_4.jpg
-    │       └── test-5.jpg
-    ├── docs
-    │   ├── commands.rst
-    │   ├── conf.py
-    │   ├── getting-started.rst
-    │   ├── index.rst
-    │   ├── make.bat
-    │   └── Makefile
-    ├── LICENSE
-    ├── Makefile
-    ├── notebooks
-    │   ├── fastai_food_101.ipynb             <- Implementation and results using fastai library
-    │   ├── keras_food_101.ipynb             <- Implementation and results using keras library    
-    │   └── images
-    │       ├── food-101.jpg
-    │       └── resnet-50.png
-    │       └── loss.png
-    │       └── acc.png
-    │       └── ft_loss.png    
-    │       └── acc_loss.png    
-    ├── README.md
-    ├── references
-    ├── reports
-    │   └── figures
-    ├── requirements.txt                      <- The requirements file for reproducing the analysis environment
-    ├── setup.py
-    ├── src
-    │   ├── models                            <- Keras Scripts to train, finetune models and make predictions
-    │   │   ├── eda.py
-    │   │   ├── find_lr_model.py
-    │   │   ├── find_lr.py
-    │   │   ├── finetune_model.py
-    │   │   ├── __init__.py
-    │   │   ├── model.py
-    │   │   ├── one_cycle_lr.py
-    │   │   ├── predict_model.py
-    │   │   └── train_model.py
-    │   └── visualization                    <- Keras Scripts to create exploratory visualizations
-    │       ├── __init__.py 
-    │       └── visualize.py
-    ├── test_environment.py
-    └── tox.ini
-
-
-
---------
-
-<p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
----
 ## Test Images Results
 Test Image            |  Predictions
 ---------------------------|---------------------------
