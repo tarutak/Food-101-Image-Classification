@@ -6,10 +6,8 @@ Food-101
   - [References](#references)
 - [Introduction](#introduction)
 - [Fastai Approach](#fastai-approach)
-- [Keras Approach](#keras-approach)
 - [Conclusion and Result](#conclusion-and-result)
 - [Improvements](#improvements)
-- [Project Organization](#project-organization)
 - [Test Images Results](#test-images-results)
 
 
@@ -44,7 +42,6 @@ Following is a comparison of the previous SoTA classification results for the Fo
 [2 ] **WISeR Approach** Martinel, Niki, Gian Luca Foresti, and Christian Micheloni. [Wide-slice residual networks for food recognition](https://arxiv.org/pdf/1612.06543.pdf) . Applications of Computer Vision (WACV), 2018 IEEE Winter Conference on . IEEE, 2018.
 
 [3] **ResNet + fastai Approach** [platform.ai](https://platform.ai/blog/page/3/new-food-101-sota-with-fastai-and-platform-ais-fast-augmentation-search/) 
-
 
 
 ---
@@ -125,19 +122,6 @@ Results can further be improved
 ![Acc](notebooks/images/acc.png "acc") ![Loss](notebooks/images/loss.png "loss")
 
 ![Finetune Acc](notebooks/images/ft_acc.png "ft acc") ![Finetune Loss](notebooks/images/ft_loss.png "ft loss")
-
-
----
-
-*Don't forget to check out the blog in case you need a refresher on CNN, Transfer Learning and Visualizing CNN.*
-
-Link: 
-
-[1] [CNNs](https://dudeperf3ct.github.io/cnn/mnist/2018/10/17/Force-of-Convolutional-Neural-Networks/).
-
-[2] [Transfer Learning](https://dudeperf3ct.github.io/transfer/learning/catsvsdogs/2018/11/20/Power-of-Transfer-Learning/).
-
-[3] [Visualizing CNN](https://dudeperf3ct.github.io/visualize/cnn/catsvsdogs/2018/12/02/Power-of-Visualizing-Convolution-Neural-Networks/).
 
 ---
 
