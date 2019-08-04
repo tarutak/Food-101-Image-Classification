@@ -61,6 +61,51 @@ I have done a few other projects in Fastai and I am more comfortable with its da
 This is very so ImageNet like where we had 1.2  million images to classify into 1000 categories, we have observed that *CNN* are the goto models for such image classification tasks.
 
 ---
+**Steps**
+I trained three models
+- [1] ResNet 18
+- [2] ResNet 50
+- [3] ResNet 50 with specific transformations.
+
+
+What result do we obtain after going through all this? Let's have a look
+
+All results obtained are using Google Cloud Platforms, Nvidia T4 GPU. I have also utilized half precision training which could have resulted in faster training.
+
+**[1] ResNet 18**
+
+|  Phase                       |   Time Taken (hrs)          |  Epochs  |  Top-1 Accuracy  % |  Top-5 Accuracy %  |
+| ------------------------|----------------------------------|--------------|------------------------------|------------------------------|
+| Train on 192 size images(Freeze+ Unfreeze)  |  1.5 | 17   |                 76           |            -                |
+|  Train on 384 size images(Freeze+ Unfreeze) | 2.1  |  10   |               82.5    |           -                   |
+|  Train on 512 size images(Freeze+ Unfreeze)  | 2.8 |  8  |                 83          |            96.46                 |
+
+**TTA Final= 83.48%*, *Total Epochs=35*, *Total time=6.4 Hours** 
+
+---
+**[2] ResNet 50- 3 Stage**
+
+|  Phase                       |   Time Taken (hrs)          |  Epochs  |  Top-1 Accuracy  % |  Top-5 Accuracy %  |
+| ------------------------|----------------------------------|--------------|------------------------------|------------------------------|
+| Train on 192 size images(Freeze+ Unfreeze)  |  2.1 | 13   |                 80.5           |            95.46               |
+|  Train on 384 size images(Freeze+ Unfreeze) | 4.3  |  8   |               85.38    |           97.29                   |
+|  Train on 512 size images(Freeze+ Unfreeze)  | 4.5 |  8  |                 85.76          |            97.34                 |
+
+
+**TTA Final= 86.02%*, *Total Epochs=29*, *Total time=11.04 Hours** 
+
+---
+**[3] ResNet 50- 2 Stage*
+
+|  Phase                       |   Time Taken (hrs)          |  Epochs  |  Top-1 Accuracy  % |  Top-5 Accuracy %  |
+| ------------------------|----------------------------------|--------------|------------------------------|------------------------------|
+| Train on 224 size images(Freeze+ Unfreeze)  |  2.5 | 14   |                 83.8           |            96.54               |
+|  Train on 512 size images(Freeze+ Unfreeze)  | 6.9 |  12  |                 86.66          |            97.45                 |
+
+
+**TTA Final= 87.08%*, *Total Epochs=26*, *Total time=11.04 Hours** 
+ 
+---
 
 ## Fastai Approach
 
@@ -78,54 +123,9 @@ The Fastai Approach typically follows the following approach for Image Classific
 - Fastai has powerful inference functions which allows us to understand and unravel the specifics of how our model is making a prediction, what are our top losses,etc.
 
 ---
-**Steps**
-I trained three models
-- [1] ResNet 18
-- [2] ResNet 50
-- [3] ResNet 50 with specific transformations.
-
-
-What result do we obtain after going through all this? Let's have a look
-
-All results obtained are using Google Cloud Platforms, Nvidia T4 GPU. I have also utilized half precision training which could have resulted in faster training.
-
-*ResNet 18*
-
-|  Phase                       |   Time Taken (hrs)          |  Epochs  |  Top-1 Accuracy  % |  Top-5 Accuracy %  |
-| ------------------------|----------------------------------|--------------|------------------------------|------------------------------|
-| Train on 192 size images(Freeze+ Unfreeze)  |  1.5 | 17   |                 76           |            -                |
-|  Train on 384 size images(Freeze+ Unfreeze) | 2.1  |  10   |               82.5    |           -                   |
-|  Train on 512 size images(Freeze+ Unfreeze)  | 2.8 |  8  |                 83          |            96.46                 |
-
-*TTA Final= 83.48%*, *Total Epochs=35*, *Total time=6.4 Hours* 
-
----
-*ResNet 50- 3 Stage*
-
-|  Phase                       |   Time Taken (hrs)          |  Epochs  |  Top-1 Accuracy  % |  Top-5 Accuracy %  |
-| ------------------------|----------------------------------|--------------|------------------------------|------------------------------|
-| Train on 192 size images(Freeze+ Unfreeze)  |  2.1 | 13   |                 80.5           |            95.46               |
-|  Train on 384 size images(Freeze+ Unfreeze) | 4.3  |  8   |               85.38    |           97.29                   |
-|  Train on 512 size images(Freeze+ Unfreeze)  | 4.5 |  8  |                 85.76          |            97.34                 |
-
-
-*TTA Final= 86.02%*, *Total Epochs=29*, *Total time=11.04 Hours* 
-
----
-*ResNet 50- 2 Stage*
-
-|  Phase                       |   Time Taken (hrs)          |  Epochs  |  Top-1 Accuracy  % |  Top-5 Accuracy %  |
-| ------------------------|----------------------------------|--------------|------------------------------|------------------------------|
-| Train on 224 size images(Freeze+ Unfreeze)  |  2.5 | 14   |                 83.8           |            96.54               |
-|  Train on 512 size images(Freeze+ Unfreeze)  | 6.9 |  12  |                 86.66          |            97.45                 |
-
-
-*TTA Final= 87.08%*, *Total Epochs=26*, *Total time=11.04 Hours* 
- 
----
 
 **Conclusion**
- - ResNet-50(2 stage) helped me achieve Top-1 Accuracy of 87.08 and Top-5 Accuracy of 97.45 in 25 Epochs, where as the current SoTA on Food-101 dataset is Top-1 Accuracy of 90.52 and Top-5 Accuracy of 98.34 in *16* Epochs.
+ - ***ResNet-50(2 stage) helped me achieve Top-1 Accuracy of 87.08 and Top-5 Accuracy of 97.45 in 25 Epochs, where as the current SoTA on Food-101 dataset is Top-1 Accuracy of 90.52 and Top-5 Accuracy of 98.34 in *16* Epochs.***
  - The dataset has a few categories like steak & fillet Minion, chocolate cake & chocolate mousse, Icecream & yogurt which result in the maximum loss. If we dig deeper we realise that it is difficult for humans to make those differences. 
  - ResNet 18 also did a pretty decent job reaching upto 80% accuracy mark but starts to struggle after that, ResNet 50 quickly surpasses ResNet18 but training becomes incredibly slow after 85% mark.
  - I tried to achieve higher accuracy while keeping the number of epochs lesser. We could get higher metrics by prolonged training but Platform.ai's article highlights how they were able to train a less complex model very efficiently.
@@ -136,3 +136,4 @@ All results obtained are using Google Cloud Platforms, Nvidia T4 GPU. I have als
 Results can further be improved
 - Exploring optimal transformation for categories which contributes to majority misclassifications.
 - Faster GPU will definitely help for quicker expermentations which may result in better results.
+---
