@@ -77,7 +77,7 @@ The Fastai Approach typically follows the following approach for Image Classific
 - We use a special ensemble prediction technique called Test Time Augmentations or TTA for final test set predictions. For each image in our test set, we get 8 transformed images on which our model makes predictions and we weight all the prediction to make our final answer.
 - Fastai has powerful inference functions which allows us to understand and unravel the specifics of how our model is making a prediction, what are our top losses,etc.
 
-
+---
 **Steps**
 I trained three models
 - [1] ResNet 18
@@ -90,29 +90,37 @@ What result do we obtain after going through all this? Let's have a look
 All results obtained are using Google Cloud Platforms, Nvidia T4 GPU. I have also utilized half precision training which could have resulted in faster training.
 
 *ResNet 18*
+
 |  Phase                       |   Time Taken (hrs)          |  Epochs  |  Top-1 Accuracy  % |  Top-5 Accuracy %  |
-|------------------------|----------------------------------|--------------|------------------------------|------------------------------|
+| ------------------------|----------------------------------|--------------|------------------------------|------------------------------|
 | Train on 192 size images(Freeze+ Unfreeze)  |  1.5 | 17   |                 76           |            -                |
 |  Train on 384 size images(Freeze+ Unfreeze) | 2.1  |  10   |               82.5    |           -                   |
 |  Train on 512 size images(Freeze+ Unfreeze)  | 2.8 |  8  |                 83          |            96.46                 |
- *TTA Final= 83.48%*, *Total Epochs=35*, *Total time=6.4 Hours* 
 
+*TTA Final= 83.48%*, *Total Epochs=35*, *Total time=6.4 Hours* 
 
+---
 *ResNet 50- 3 Stage*
+
 |  Phase                       |   Time Taken (hrs)          |  Epochs  |  Top-1 Accuracy  % |  Top-5 Accuracy %  |
-|------------------------|----------------------------------|--------------|------------------------------|------------------------------|
+| ------------------------|----------------------------------|--------------|------------------------------|------------------------------|
 | Train on 192 size images(Freeze+ Unfreeze)  |  2.1 | 13   |                 80.5           |            95.46               |
 |  Train on 384 size images(Freeze+ Unfreeze) | 4.3  |  8   |               85.38    |           97.29                   |
 |  Train on 512 size images(Freeze+ Unfreeze)  | 4.5 |  8  |                 85.76          |            97.34                 |
- *TTA Final= 86.02%*, *Total Epochs=29*, *Total time=11.04 Hours* 
 
 
+*TTA Final= 86.02%*, *Total Epochs=29*, *Total time=11.04 Hours* 
+
+---
 *ResNet 50- 2 Stage*
+
 |  Phase                       |   Time Taken (hrs)          |  Epochs  |  Top-1 Accuracy  % |  Top-5 Accuracy %  |
-|------------------------|----------------------------------|--------------|------------------------------|------------------------------|
+| ------------------------|----------------------------------|--------------|------------------------------|------------------------------|
 | Train on 224 size images(Freeze+ Unfreeze)  |  2.5 | 14   |                 83.8           |            96.54               |
 |  Train on 512 size images(Freeze+ Unfreeze)  | 6.9 |  12  |                 86.66          |            97.45                 |
- *TTA Final= 87.08%*, *Total Epochs=26*, *Total time=11.04 Hours* 
+
+
+*TTA Final= 87.08%*, *Total Epochs=26*, *Total time=11.04 Hours* 
  
 ---
 
