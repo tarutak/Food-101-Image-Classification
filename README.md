@@ -91,7 +91,7 @@ All results obtained are using Google Cloud Platforms, Nvidia T4 GPU. I have als
 
 *ResNet 18*
 |  Phase                       |   Time Taken (hrs)          |  Epochs  |  Top-1 Accuracy  % |  Top-5 Accuracy %  |
-| ------------------------     |----------------------------------| --------------|------------------------------|------------------------------ |
+|------------------------|----------------------------------|--------------|------------------------------|------------------------------|
 | Train on 192 size images(Freeze+ Unfreeze)  |  1.5 | 17   |                 76           |            -                |
 |  Train on 384 size images(Freeze+ Unfreeze) | 2.1  |  10   |               82.5    |           -                   |
 |  Train on 512 size images(Freeze+ Unfreeze)  | 2.8 |  8  |                 83          |            96.46                 |
@@ -100,7 +100,7 @@ All results obtained are using Google Cloud Platforms, Nvidia T4 GPU. I have als
 
 *ResNet 50- 3 Stage*
 |  Phase                       |   Time Taken (hrs)          |  Epochs  |  Top-1 Accuracy  % |  Top-5 Accuracy %  |
-| ------------------------     |----------------------------------| --------------|------------------------------|------------------------------ |
+|------------------------|----------------------------------|--------------|------------------------------|------------------------------|
 | Train on 192 size images(Freeze+ Unfreeze)  |  2.1 | 13   |                 80.5           |            95.46               |
 |  Train on 384 size images(Freeze+ Unfreeze) | 4.3  |  8   |               85.38    |           97.29                   |
 |  Train on 512 size images(Freeze+ Unfreeze)  | 4.5 |  8  |                 85.76          |            97.34                 |
@@ -109,7 +109,7 @@ All results obtained are using Google Cloud Platforms, Nvidia T4 GPU. I have als
 
 *ResNet 50- 2 Stage*
 |  Phase                       |   Time Taken (hrs)          |  Epochs  |  Top-1 Accuracy  % |  Top-5 Accuracy %  |
-| ------------------------     |----------------------------------| --------------|------------------------------|------------------------------ |
+|------------------------|----------------------------------|--------------|------------------------------|------------------------------|
 | Train on 224 size images(Freeze+ Unfreeze)  |  2.5 | 14   |                 83.8           |            96.54               |
 |  Train on 512 size images(Freeze+ Unfreeze)  | 6.9 |  12  |                 86.66          |            97.45                 |
  *TTA Final= 87.08%*, *Total Epochs=26*, *Total time=11.04 Hours* 
