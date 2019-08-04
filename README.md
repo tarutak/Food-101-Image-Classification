@@ -17,7 +17,7 @@ Food-101
 
 Train a decent model >85% accuracy for top-1 for the test set, using a ResNet50 or smaller network with a reasonable set of augmentations. 
 
-![sample image from dataset](notebooks/images/food-101.jpg "Food-101 sample images")
+![sample image from dataset](sample/food-101.jpg "Food-101 sample images")
 
 
 ---
@@ -46,9 +46,11 @@ Following is a comparison of the previous SoTA classification results for the Fo
 
 ---
 
-We will tackle this problem using, 
+I plan to tackle this problem using,
 
 [Fastai](https://docs.fast.ai/)
+
+I have done a few other projects in Fastai and I am more comfortable with its data block api and image augmentations setup is easy. The Platform.ai group who has achieved SoTA also utilizes the same library and demonstrate that we can achieve decent results with ResNets quickly with minimal manual augmentations.
 
  ---
 
@@ -56,80 +58,73 @@ We will tackle this problem using,
 
  Our objective is to classify 101,000 food images in 101 categories.
 
-This is very so ImageNet like where we had 1.2  million images to classify into 1000 categories. There we saw explosion of different architectures starting from AlexNet, ZFNet, VGG, GoogLeNet, Inception v3, ResNet, SqueezeNet, and many other Nets to tackle this problem *better than humans*.
-
-
-Now it's time to *stand on shoulder of these Nets* and use it to solve our classification problem into 101 food categories.
-
-We have already seen a great length why **CNNs** are great at these jobs and we looked at many other things in [this blog](https://dudeperf3ct.github.io/cnn/mnist/2018/10/17/Force-of-Convolutional-Neural-Networks/).
+This is very so ImageNet like where we had 1.2  million images to classify into 1000 categories, we have observed that *CNN* are the goto models for such image classification tasks.
 
 ---
 
 ## Fastai Approach
 
-We will use ResNet50 as base architecture.
+The Fastai Approach typically follows the following approach for Image Classification tasks:
+- Get the data from its source and understand how the data is structured for the problem, i.e., Labels, Train set , valid set, etc
+- Use the datablock API of Fastai to make a data bunch by defining how to load the data, how to label the data, how to split it and which types of transformations to apply for augmentations
+- Smart image augmentation is key to getting better generalization and making the most out of available data.
+- Next we proceed to create a learner object wherein we define the type of Architecture, Data, Loss functions, metrics ,etc. We always start with a pretrained model because low-mid level to feature representations will always be similar for any model.
+- In Fastai, The single most important parameter we always tweak is Learning rate. Learning Rate finder is a function which allows us to learn what is the largest LR we can use to train our model without causing our loss to diverge. We can get a plot of Learning rate vs Losses, which helps us decide the optimal LR. We can also tune Weight Decay but that should be secondary.
+- Fastai course, Practical Deep learning for coders, introduces various concepts like Cyclical Learning rate, Super Convergence, Progressive resizing, discriminative LR for different layer groups.
+- Typical training flow of a model is to train on images for smaller size, inititally with all layers except the last one frozen and then tuning all the layers unfreezed. We move on to repeat the same steps with bigger image size and smaller batch size.
+- The library allows us to set different learning rate of early layers, mid layers and last layers of the model which helps to effectively trian the models.
+- We have callbacks in Fastai library which allows us to monitor Loss and evaluation metrics as we train the model.
+- We use a special ensemble prediction technique called Test Time Augmentations or TTA for final test set predictions. For each image in our test set, we get 8 transformed images on which our model makes predictions and we weight all the prediction to make our final answer.
+- Fastai has powerful inference functions which allows us to understand and unravel the specifics of how our model is making a prediction, what are our top losses,etc.
 
-
-![resnet50](notebooks/images/resnet-50.png "ResNet50")
 
 **Steps**
+I trained three models
+- [1] ResNet 18
+- [2] ResNet 50
+- [3] ResNet 50 with specific transformations.
 
-- We will add transformations like brightness, contrast, zoom, etc and resize all the images to size 224 for passing to the base architecture of ResNet50.
-- Find a proper learning rate using LR Finder, an approach proposed by Leslie Smith in awesome paper [Cyclical Learning Rates for Training Neural Networks](https://arxiv.org/abs/1506.01186). To further peeking in how it works, look [here](https://sgugger.github.io/the-1cycle-policy.html), [here](http://teleported.in/posts/cyclic-learning-rate/) and [here](https://www.jeremyjordan.me/nn-learning-rate/) and [Super-Convergence paper](https://arxiv.org/abs/1708.07120) .
-- Train by keeping the weights of ResNet50 architecture (*excluding last FC layer*) fixed for 5 epochs.
-- Unfreeze (*we can change the frozen weights of resnet50*), and train again for 4 epochs. This involves approach called discrimative fine-tuning(differential learning) which that the initial layers in CNN architectures better identify basic patterns like edge, textures and we don't wan't to drastically change that learning and hence very low learning rate, on other hand the final layers can be changed using higher learning rate. To see further, look [here](https://towardsdatascience.com/transfer-learning-using-differential-learning-rates-638455797f00), [here](https://towardsdatascience.com/transfer-learning-using-differential-learning-rates-638455797f00).
-- Then, we will change the size of images from 224 to 512. (*Wooh bigger images*) and use the same model above train further.
-- Again we approach the same methods above, freeze for 4 epochs and unfreeze and train for 3 epochs.
-
-
-*Simple Enough?*
 
 What result do we obtain after going through all this? Let's have a look
 
-All results obtained are using Google Colab(*thanks Google!*).
+All results obtained are using Google Cloud Platforms, Nvidia T4 GPU. I have also utilized half precision training which could have resulted in faster training.
 
-
+*ResNet 18*
 |  Phase                       |   Time Taken (hrs)          |  Epochs  |  Top-1 Accuracy  % |  Top-5 Accuracy %  |
 | ------------------------     |----------------------------------| --------------|------------------------------|------------------------------ |
-| Freeze and Train on 224 size images  |  4 | 5   |                 75           |            92.36                |
-|  Unfreeze and Train on 224 size images | 4  |  4   |               85    |           95.11                   |
-|  Freeze and Train on 512 size images  | 7 |  4  |                 70          |            90.24                 |
-|  Unfreeze and Train on 512 size images  | 7 |  3 |                 83           |            95.98                 |
+| Train on 192 size images(Freeze+ Unfreeze)  |  1.5 | 17   |                 76           |            -                |
+|  Train on 384 size images(Freeze+ Unfreeze) | 2.1  |  10   |               82.5    |           -                   |
+|  Train on 512 size images(Freeze+ Unfreeze)  | 2.8 |  8  |                 83          |            96.46                 |
+ *TTA Final= 83.48%*, *Total Epochs=35*, *Total time=6.4 Hours* 
 
+
+*ResNet 50- 3 Stage*
+|  Phase                       |   Time Taken (hrs)          |  Epochs  |  Top-1 Accuracy  % |  Top-5 Accuracy %  |
+| ------------------------     |----------------------------------| --------------|------------------------------|------------------------------ |
+| Train on 192 size images(Freeze+ Unfreeze)  |  2.1 | 13   |                 80.5           |            95.46               |
+|  Train on 384 size images(Freeze+ Unfreeze) | 4.3  |  8   |               85.38    |           97.29                   |
+|  Train on 512 size images(Freeze+ Unfreeze)  | 4.5 |  8  |                 85.76          |            97.34                 |
+ *TTA Final= 86.02%*, *Total Epochs=29*, *Total time=11.04 Hours* 
+
+
+*ResNet 50- 2 Stage*
+|  Phase                       |   Time Taken (hrs)          |  Epochs  |  Top-1 Accuracy  % |  Top-5 Accuracy %  |
+| ------------------------     |----------------------------------| --------------|------------------------------|------------------------------ |
+| Train on 224 size images(Freeze+ Unfreeze)  |  2.5 | 14   |                 83.8           |            96.54               |
+|  Train on 512 size images(Freeze+ Unfreeze)  | 6.9 |  12  |                 86.66          |            97.45                 |
+ *TTA Final= 87.08%*, *Total Epochs=26*, *Total time=11.04 Hours* 
+ 
 ---
 
 **Conclusion**
-
-*Phew!* 
-
-**A lot of patience** - 22 hrs (*and dealing with colab is not easy, poor connections will lead to always disconnecting and 12 hrs timeout*)
-
-**Very Cool Classifier** - Top-1 Accuracy = 83% and Top-5 Accuracy = 96%
-
+ - ResNet-50(2 stage) helped me achieve Top-1 Accuracy of 87.08 and Top-5 Accuracy of 97.45 in 25 Epochs, where as the current SoTA on Food-101 dataset is Top-1 Accuracy of 90.52 and Top-5 Accuracy of 98.34 in *16* Epochs.
+ - The dataset has a few categories like steak & fillet Minion, chocolate cake & chocolate mousse, Icecream & yogurt which result in the maximum loss. If we dig deeper we realise that it is difficult for humans to make those differences. 
+ - ResNet 18 also did a pretty decent job reaching upto 80% accuracy mark but starts to struggle after that, ResNet 50 quickly surpasses ResNet18 but training becomes incredibly slow after 85% mark.
+ - I tried to achieve higher accuracy while keeping the number of epochs lesser. We could get higher metrics by prolonged training but Platform.ai's article highlights how they were able to train a less complex model very efficiently.
 ---
 
 **Improvements**
 
 Results can further be improved
-
-- Train longer (*as always, I need more power*)
-- Experimenting with more transformations like skewness, jitter, etc can lead to more robustness
-
-
-**Plots**
-
-
-![Acc](notebooks/images/acc.png "acc") ![Loss](notebooks/images/loss.png "loss")
-
-![Finetune Acc](notebooks/images/ft_acc.png "ft acc") ![Finetune Loss](notebooks/images/ft_loss.png "ft loss")
-
----
-
-## Test Images Results
-Test Image            |  Predictions
----------------------------|---------------------------
-![test_1](data/test/test_1.jpg "Test_1")  | ![prediction_1](data/results/result_test_1.png "Prediction_1")
-![test_2](data/test/test_2.jpg "Test_2")  | ![prediction_2](data/results/result_test_2.png "Prediction_2")
-![test_3](data/test/test_3.jpg "Test_3")  | ![prediction_3](data/results/result_test_3.png "Prediction_3")
-![test_4](data/test/test_4.jpg "Test_4")  | ![prediction_4](data/results/result_test_4.png "Prediction_4")
-![test_5](data/test/test-5.jpg "Test_5")  | ![prediction_5](data/results/result_test-5.png "Prediction_5")
+- Exploring optimal transformation for categories which contributes to majority misclassifications.
+- Faster GPU will definitely help for quicker expermentations which may result in better results.
