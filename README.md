@@ -36,9 +36,8 @@ Following is a comparison of the previous SoTA classification results for the Fo
 ---
  ## Introduction
 
- Our objective is to classify 101,000 food images in 101 categories.
+Our objective is to classify 101,000 food images in 101 categories.This is very so ImageNet like where we had 1.2  million images to classify into 1000 categories, we have observed that *CNN* are the goto models for such image classification tasks.
 
-This is very so ImageNet like where we had 1.2  million images to classify into 1000 categories, we have observed that *CNN* are the goto models for such image classification tasks.
 ---
 
 
