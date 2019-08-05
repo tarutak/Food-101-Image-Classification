@@ -34,23 +34,22 @@ Following is a comparison of the previous SoTA classification results for the Fo
 
 
 ---
-### My Solution
-
-I plan to tackle this problem using,
-
-[Fastai](https://docs.fast.ai/)
-
-I have done a few other projects in Fastai and I am more comfortable with its data block api and image augmentations setup is easy. The Platform.ai group who has achieved SoTA also utilizes the same library and demonstrate that we can achieve decent results with ResNets quickly with minimal manual augmentations.
-
- ---
-
  ## Introduction
 
  Our objective is to classify 101,000 food images in 101 categories.
 
 This is very so ImageNet like where we had 1.2  million images to classify into 1000 categories, we have observed that *CNN* are the goto models for such image classification tasks.
-
 ---
+
+
+### My Solution
+
+ - ***ResNet-50 helped me achieve Top-1 Accuracy of 87.08 and Top-5 Accuracy of 97.45 in 25 Epochs, where as the current SoTA on Food-101 dataset is Top-1 Accuracy of 90.52 and Top-5 Accuracy of 98.34 in *16* Epochs.***
+ 
+I plan to tackle this problem using [Fastai](https://docs.fast.ai/)
+
+I have done a few other projects in Fastai and I am more comfortable with its data block api and image augmentations setup is easy. The Platform.ai group who has achieved SoTA also utilizes the same library and demonstrate that we can achieve decent results with ResNets quickly with minimal manual augmentations.
+
 **Steps**
 I trained three models
 - [1] ResNet 18
