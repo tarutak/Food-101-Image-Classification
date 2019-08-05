@@ -17,7 +17,7 @@ Food-101
 
 Train a decent model >85% accuracy for top-1 for the test set, using a ResNet50 or smaller network with a reasonable set of augmentations. 
 
-![sample image from dataset](sample/food-101.jpg "Food-101 sample images")
+![sample image from dataset](food-101.jpg "Food-101 sample images")
 
 
 ---
